@@ -8,4 +8,6 @@ These are some of the links I ended up using to solve some problems I've encount
  - __Missing dependencies when trying to use rest-assured__: [here](https://github.com/rest-assured/rest-assured/issues/1168)
  - __Swagger UI__: [here](https://medium.com/@guyheylens/adding-swagger-to-your-spring-rest-api-written-in-kotlin-aa6d29d58a21) and [here](https://stackoverflow.com/questions/37671125/how-to-configure-spring-security-to-allow-swagger-url-to-be-accessed-without-aut) to let the app serve the swagger frontend
  - __Custom controller method signatures__: [Spring docs](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-methods) and [here](https://reflectoring.io/spring-boot-argumentresolver/)
+ - __Test Configuration (to avoid adding test beans inside app config classes)__: [here](https://mkyong.com/spring-boot/spring-boot-how-to-init-a-bean-for-testing/) 
+ - __Faker__: [here](https://www.baeldung.com/java-faker)
  

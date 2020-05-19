@@ -1,11 +1,10 @@
 package dev.josers.realworld
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dev.josers.realworld.config.JWTUtils
-import dev.josers.realworld.model.User
 import dev.josers.realworld.repository.UserRepository
-import dev.josers.realworld.request.UserLoginRequestVO
-import dev.josers.realworld.request.UserRequestVO
+import dev.josers.realworld.utils.JWTUtils
+import dev.josers.realworld.vo.request.UserLoginRequestVO
+import dev.josers.realworld.vo.request.UserRequestVO
 import io.restassured.RestAssured.given
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
@@ -15,10 +14,12 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
+@Import(TestConfig::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserModuleIntegrationTests {
 
@@ -46,6 +47,9 @@ class UserModuleIntegrationTests {
 	fun tearDown() {
 		userRepository.deleteAll()
 	}
+
+	@Autowired
+	lateinit var testUtils: TestUtils
 
 	@Test
 	fun userRegisteredShouldReturnOK() {
@@ -80,17 +84,15 @@ class UserModuleIntegrationTests {
 	@Test
 	fun loginWithValidCredentialsShouldReturnOK() {
 
-		userRepository.save(User(
-			email = "jane@doe.com",
-			password = encoder.encode("secret"),
-			image = null,
-			bio = null,
-			username = "jane"))
+		val user = testUtils.createFakeUser()
+		val rawPassword = user.password.substring(0)
+		user.password = encoder.encode(user.password)
+		userRepository.save(user)
 
 		val request = UserLoginRequestVO(
 			user = UserLoginRequestVO.Credentials(
-				email = "jane@doe.com",
-				password = "secret"
+				email = user.email,
+				password = rawPassword
 			)
 		)
 
@@ -106,22 +108,18 @@ class UserModuleIntegrationTests {
 			.log().all()
 		.assertThat()
 			.statusCode(HttpStatus.OK.value())
-			.body("user.username", equalTo("jane"))
-			.body("user.email", equalTo("jane@doe.com"))
+			.body("user.username", equalTo(user.username))
+			.body("user.email", equalTo(user.email))
 			.body("user.token", notNullValue())
 	}
 
 	@Test
 	fun getUserWithValidTokenShouldReturnOK() {
 
-		userRepository.save(User(
-				email = "jane@doe.com",
-				password = encoder.encode("secret"),
-				image = null,
-				bio = null,
-				username = "jane"))
+		val user = testUtils.createFakeUser()
+		userRepository.save(user)
 
-		val token = jwtUtils.doGenerateToken(HashMap(), "jane@doe.com")
+		val token = jwtUtils.doGenerateToken(HashMap(), user.email)
 
 		given()
 			.log().all()
@@ -135,22 +133,18 @@ class UserModuleIntegrationTests {
 			.log().all()
 		.assertThat()
 			.statusCode(HttpStatus.OK.value())
-			.body("user.username", equalTo("jane"))
-			.body("user.email", equalTo("jane@doe.com"))
+			.body("user.username", equalTo(user.username))
+			.body("user.email", equalTo(user.email))
 			.body("user.token", notNullValue())
 	}
 
 	@Test
 	fun updateUserWithValidTokenShouldReturnOK() {
 
-		userRepository.save(User(
-			email = "jane@doe.com",
-			password = "secret",
-			image = null,
-			bio = null,
-			username = "jane"))
+		val user = testUtils.createFakeUser()
+		userRepository.save(user)
 
-		val token = jwtUtils.doGenerateToken(HashMap(), "jane@doe.com")
+		val token = jwtUtils.doGenerateToken(HashMap(), user.email)
 
 		val request = UserRequestVO(
 			user = UserRequestVO.UserData(
@@ -174,7 +168,7 @@ class UserModuleIntegrationTests {
 			.body("user.username", equalTo("marie"))
 			.body("user.token", notNullValue())
 
-		val updatedUser = userRepository.findByEmail("jane@doe.com")
+		val updatedUser = userRepository.findByEmail(user.email)
 		assert(updatedUser?.username.equals("marie"))
 	}
 }

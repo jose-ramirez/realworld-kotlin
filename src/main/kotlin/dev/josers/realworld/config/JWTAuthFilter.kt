@@ -1,5 +1,6 @@
 package dev.josers.realworld.config
 
+import dev.josers.realworld.utils.JWTUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -24,9 +25,9 @@ class JWTAuthFilter(@Autowired val jwtUtils: JWTUtils,
 
         if(token != null) {
             try {
-                val username = jwtUtils.getAllClaimsFromToken(token).subject
+                val email = jwtUtils.getAllClaimsFromToken(token).subject
 
-                val userDetails = service.loadUserByUsername(username)
+                val userDetails = service.loadUserByUsername(email)
 
                 val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                 authToken.details = WebAuthenticationDetailsSource().buildDetails(request)

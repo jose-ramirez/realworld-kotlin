@@ -1,7 +1,7 @@
 package dev.josers.realworld.service
 
 import dev.josers.realworld.repository.TagRepository
-import dev.josers.realworld.response.TagResponseVO
+import dev.josers.realworld.vo.response.TagResponseVO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

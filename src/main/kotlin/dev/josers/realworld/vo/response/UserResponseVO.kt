@@ -1,4 +1,4 @@
-package dev.josers.realworld.response
+package dev.josers.realworld.vo.response
 
 class UserResponseVO(val user: UserDataResponse? = null) {
     data class UserDataResponse(val email: String = "",

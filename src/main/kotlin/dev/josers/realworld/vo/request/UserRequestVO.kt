@@ -1,4 +1,4 @@
-package dev.josers.realworld.request
+package dev.josers.realworld.vo.request
 
 import dev.josers.realworld.model.User
 

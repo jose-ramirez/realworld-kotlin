@@ -1,4 +1,4 @@
-package dev.josers.realworld.config
+package dev.josers.realworld.utils
 
 import io.jsonwebtoken.lang.Strings
 

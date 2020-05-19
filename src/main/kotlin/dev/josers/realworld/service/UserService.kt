@@ -1,12 +1,12 @@
 package dev.josers.realworld.service
 
-import dev.josers.realworld.config.JWTUtils
-import dev.josers.realworld.config.updateVal
 import dev.josers.realworld.model.User
 import dev.josers.realworld.repository.UserRepository
-import dev.josers.realworld.request.UserLoginRequestVO
-import dev.josers.realworld.request.UserRequestVO
-import dev.josers.realworld.response.UserResponseVO
+import dev.josers.realworld.utils.JWTUtils
+import dev.josers.realworld.utils.updateVal
+import dev.josers.realworld.vo.request.UserLoginRequestVO
+import dev.josers.realworld.vo.request.UserRequestVO
+import dev.josers.realworld.vo.response.UserResponseVO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -54,13 +54,13 @@ class UserService(@Autowired val userRepository: UserRepository,
         val possibleUser = userRepository.findByEmail(loggedUser.email)
         return if(possibleUser != null){
             UserResponseVO(
-                    user = UserResponseVO.UserDataResponse(
-                            email = possibleUser.email,
-                            username = possibleUser.username,
-                            bio = possibleUser.bio,
-                            image = possibleUser.image,
-                            token = jwtUtils.doGenerateToken(HashMap(), possibleUser.email)
-                    )
+                user = UserResponseVO.UserDataResponse(
+                    email = possibleUser.email,
+                    username = possibleUser.username,
+                    bio = possibleUser.bio,
+                    image = possibleUser.image,
+                    token = jwtUtils.doGenerateToken(HashMap(), possibleUser.email)
+                )
             )
         } else UserResponseVO(user = null)
     }

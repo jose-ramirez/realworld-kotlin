@@ -1,9 +1,9 @@
 package dev.josers.realworld.controller
 
 import dev.josers.realworld.model.User
-import dev.josers.realworld.request.UserLoginRequestVO
-import dev.josers.realworld.request.UserRequestVO
 import dev.josers.realworld.service.UserService
+import dev.josers.realworld.vo.request.UserLoginRequestVO
+import dev.josers.realworld.vo.request.UserRequestVO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
