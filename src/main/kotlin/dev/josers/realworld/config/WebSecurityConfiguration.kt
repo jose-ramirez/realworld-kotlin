@@ -40,6 +40,7 @@ class WebSecurityConfiguration: WebSecurityConfigurerAdapter() {
                 .antMatchers(HttpMethod.POST,"/api/users").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/users/login").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/tags").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/profiles/**").permitAll()
             .anyRequest().authenticated()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
