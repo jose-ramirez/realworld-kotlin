@@ -1,4 +1,4 @@
-package dev.josers.realworld
+package dev.josers.realworld.config
 
 import com.github.javafaker.Faker
 import org.springframework.boot.test.context.TestConfiguration

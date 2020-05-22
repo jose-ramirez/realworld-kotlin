@@ -1,4 +1,4 @@
-package dev.josers.realworld
+package dev.josers.realworld.utils
 
 import com.github.javafaker.Faker
 import dev.josers.realworld.model.User

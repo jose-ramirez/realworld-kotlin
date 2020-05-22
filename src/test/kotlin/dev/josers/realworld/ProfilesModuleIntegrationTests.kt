@@ -1,9 +1,11 @@
 package dev.josers.realworld
 
+import dev.josers.realworld.config.TestConfig
 import dev.josers.realworld.model.Following
 import dev.josers.realworld.repository.FollowingRepository
 import dev.josers.realworld.repository.UserRepository
 import dev.josers.realworld.utils.JWTUtils
+import dev.josers.realworld.utils.TestUtils
 import io.restassured.RestAssured.given
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.AfterEach

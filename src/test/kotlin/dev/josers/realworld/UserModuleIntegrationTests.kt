@@ -1,8 +1,10 @@
 package dev.josers.realworld
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import dev.josers.realworld.config.TestConfig
 import dev.josers.realworld.repository.UserRepository
 import dev.josers.realworld.utils.JWTUtils
+import dev.josers.realworld.utils.TestUtils
 import dev.josers.realworld.vo.request.UserLoginRequestVO
 import dev.josers.realworld.vo.request.UserRequestVO
 import io.restassured.RestAssured.given
