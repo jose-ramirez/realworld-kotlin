@@ -40,6 +40,9 @@ class UserModuleIntegrationTests {
 	@Autowired
 	lateinit var jwtUtils: JWTUtils
 
+	@Autowired
+	lateinit var testUtils: TestUtils
+
 	@BeforeEach
 	fun setup() {
 		userRepository.deleteAll()
@@ -49,9 +52,6 @@ class UserModuleIntegrationTests {
 	fun tearDown() {
 		userRepository.deleteAll()
 	}
-
-	@Autowired
-	lateinit var testUtils: TestUtils
 
 	@Test
 	fun userRegisteredShouldReturnOK() {
@@ -172,5 +172,27 @@ class UserModuleIntegrationTests {
 
 		val updatedUser = userRepository.findByEmail(user.email)
 		assert(updatedUser?.username.equals("marie"))
+	}
+
+	@Test
+	fun updateUserWithMissingTokenShouldReturnUnauthorized() {
+		val request = UserRequestVO(
+			user = UserRequestVO.UserData(
+				username = "marie"
+			)
+		)
+
+		given()
+			.log().all()
+			.port(port)
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.body(mapper.writeValueAsString(request))
+		.`when`()
+			.put("/api/users")
+		.then()
+			.log().all()
+		.assertThat()
+			.statusCode(HttpStatus.UNAUTHORIZED.value())
 	}
 }
