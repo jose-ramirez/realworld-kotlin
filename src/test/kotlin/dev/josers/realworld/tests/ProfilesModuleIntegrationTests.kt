@@ -1,4 +1,4 @@
-package dev.josers.realworld
+package dev.josers.realworld.tests
 
 import dev.josers.realworld.config.TestConfig
 import dev.josers.realworld.model.Following
@@ -19,8 +19,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.util.CollectionUtils
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestConfig::class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ProfilesModuleIntegrationTests {
     @LocalServerPort
     var port: Int = 0

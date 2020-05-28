@@ -1,4 +1,4 @@
-package dev.josers.realworld
+package dev.josers.realworld.tests
 
 import dev.josers.realworld.config.TestConfig
 import dev.josers.realworld.model.Tag
@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestConfig::class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TagModuleIntegrationTests {
     @LocalServerPort
     var port: Int = 0

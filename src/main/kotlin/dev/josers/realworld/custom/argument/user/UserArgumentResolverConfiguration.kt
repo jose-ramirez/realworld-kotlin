@@ -1,5 +1,6 @@
-package dev.josers.realworld.config
+package dev.josers.realworld.custom.argument.user
 
+import dev.josers.realworld.custom.argument.user.UserArgumentResolver
 import dev.josers.realworld.repository.UserRepository
 import dev.josers.realworld.utils.JWTUtils
 import org.springframework.beans.factory.annotation.Autowired

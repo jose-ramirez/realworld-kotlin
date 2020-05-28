@@ -1,4 +1,4 @@
-package dev.josers.realworld
+package dev.josers.realworld.tests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.josers.realworld.config.TestConfig
@@ -6,7 +6,6 @@ import dev.josers.realworld.repository.ArticleRepository
 import dev.josers.realworld.repository.UserRepository
 import dev.josers.realworld.utils.JWTUtils
 import dev.josers.realworld.utils.TestUtils
-import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach

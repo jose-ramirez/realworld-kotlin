@@ -1,4 +1,4 @@
-package dev.josers.realworld
+package dev.josers.realworld.tests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.josers.realworld.config.TestConfig
