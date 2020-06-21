@@ -7,9 +7,12 @@ import dev.josers.realworld.utils.updateVal
 import dev.josers.realworld.vo.request.UserLoginRequestVO
 import dev.josers.realworld.vo.request.UserRequestVO
 import dev.josers.realworld.vo.response.UserResponseVO
+import io.jsonwebtoken.lang.Strings
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @Service
@@ -17,8 +20,15 @@ class UserService(@Autowired val userRepository: UserRepository,
                   @Autowired val encoder: BCryptPasswordEncoder,
                   @Autowired val jwtUtils: JWTUtils) {
 
+    private fun checkPassword(userData: UserRequestVO.UserData) {
+        if(!Strings.hasText(userData.password)) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data", null)
+        }
+    }
+
     fun registerUser(data: UserRequestVO): UserResponseVO {
         val userData = data.user!!
+        checkPassword(userData)
         userData.password = encoder.encode(userData.password)
         val savedUser = userRepository.save(userData.toUser())
         return UserResponseVO(
@@ -46,8 +56,8 @@ class UserService(@Autowired val userRepository: UserRepository,
                         token = jwtUtils.doGenerateToken(HashMap(), possibleUser.email)
                     )
                 )
-            } else UserResponseVO(user = null)
-        } else UserResponseVO(user = null)
+            } else throw ResponseStatusException(HttpStatus.FORBIDDEN, "Forbidden", null)
+        } else throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", null)
     }
 
     fun getUser(request: UserRequestVO, loggedUser: User): UserResponseVO {
@@ -62,7 +72,7 @@ class UserService(@Autowired val userRepository: UserRepository,
                     token = jwtUtils.doGenerateToken(HashMap(), possibleUser.email)
                 )
             )
-        } else UserResponseVO(user = null)
+        } else throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", null)
     }
 
     fun updateUser(request: UserRequestVO, loggedUser: User): UserResponseVO {
