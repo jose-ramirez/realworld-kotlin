@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -41,7 +42,7 @@ class WebSecurityConfiguration: WebSecurityConfigurerAdapter() {
                 .antMatchers(HttpMethod.POST,"/api/users/login").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/tags").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/profiles/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/articles").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/articles/**").permitAll()
             .anyRequest().authenticated()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
@@ -57,7 +58,7 @@ class WebSecurityConfiguration: WebSecurityConfigurerAdapter() {
     }
 
     @Bean
-    override fun authenticationManagerBean() = super.authenticationManagerBean()
+    override fun authenticationManagerBean(): AuthenticationManager = super.authenticationManagerBean()
 
     @Bean
     fun encoder() = BCryptPasswordEncoder()

@@ -1,5 +1,6 @@
 package dev.josers.realworld.controller
 
+import dev.josers.realworld.model.User
 import dev.josers.realworld.service.ArticleService
 import dev.josers.realworld.vo.request.ListArticleRequestVO
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,4 +13,8 @@ class ArticlesController(@Autowired val articleService: ArticleService) {
     @GetMapping("/api/articles")
     fun listArticles(params: ListArticleRequestVO) =
         ResponseEntity.ok(articleService.listArticles(params))
+
+    @GetMapping("/api/articles/feed")
+    fun feed() =
+        ResponseEntity.ok(articleService.feed())
 }
