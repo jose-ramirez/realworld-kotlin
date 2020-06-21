@@ -10,4 +10,5 @@ These are some of the links I ended up using to solve some problems I've encount
  - __Custom controller method signatures__: [Spring docs](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-methods) and [here](https://reflectoring.io/spring-boot-argumentresolver/)
  - __Test Configuration (to avoid adding test beans inside app config classes)__: [here](https://mkyong.com/spring-boot/spring-boot-how-to-init-a-bean-for-testing/) 
  - __Faker__: [here](https://www.baeldung.com/java-faker)
- 
+ - __Throwing consistent errors across the api 's endpoints__: started [here](https://www.baeldung.com/spring-response-status-exception)
+ - __Problem creating a GenericContainer instance in kotlin__: [here](https://github.com/testcontainers/testcontainers-java/issues/318)
