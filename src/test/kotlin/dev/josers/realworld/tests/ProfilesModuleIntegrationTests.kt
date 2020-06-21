@@ -1,6 +1,5 @@
 package dev.josers.realworld.tests
 
-import dev.josers.realworld.config.TestConfig
 import dev.josers.realworld.model.Following
 import dev.josers.realworld.repository.FollowingRepository
 import dev.josers.realworld.repository.UserRepository
@@ -12,18 +11,11 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.util.CollectionUtils
 
-@Import(TestConfig::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ProfilesModuleIntegrationTests {
-    @LocalServerPort
-    var port: Int = 0
+class ProfilesModuleIntegrationTests: AbstractIntegrationTest() {
 
     @Autowired
     lateinit var followingRepository: FollowingRepository

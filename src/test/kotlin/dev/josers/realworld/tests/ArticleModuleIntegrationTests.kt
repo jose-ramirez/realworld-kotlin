@@ -19,9 +19,7 @@ import org.springframework.http.MediaType
 
 @Import(TestConfig::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ArticleModuleIntegrationTests {
-    @LocalServerPort
-    var port: Int = 0
+class ArticleModuleIntegrationTests: AbstractIntegrationTest() {
 
     @Autowired
     lateinit var mapper: ObjectMapper

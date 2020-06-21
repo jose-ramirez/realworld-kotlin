@@ -1,7 +1,6 @@
 package dev.josers.realworld.tests
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dev.josers.realworld.config.TestConfig
 import dev.josers.realworld.repository.UserRepository
 import dev.josers.realworld.utils.JWTUtils
 import dev.josers.realworld.utils.TestUtils
@@ -14,19 +13,12 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
-@Import(TestConfig::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserModuleIntegrationTests {
 
-	@LocalServerPort
-	var port: Int = 0
+class UserModuleIntegrationTests: AbstractIntegrationTest() {
 
 	@Autowired
 	lateinit var mapper: ObjectMapper
@@ -81,6 +73,30 @@ class UserModuleIntegrationTests {
 			.body("user.username", equalTo("jane"))
 			.body("user.email", equalTo("jane@doe.com"))
 			.body("user.token", notNullValue())
+	}
+
+	@Test
+	fun userRegistrationWithInvalidPasswordShouldReturnBadRequest() {
+
+		val request = UserRequestVO(
+			user = UserRequestVO.UserData(
+				email = "jane@doe.com",
+				username = "jane"
+			)
+		)
+
+		given()
+			.log().all()
+			.port(port)
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.body(mapper.writeValueAsString(request))
+		.`when`()
+			.post("/api/users")
+		.then()
+			.log().all()
+		.assertThat()
+			.statusCode(HttpStatus.BAD_REQUEST.value())
 	}
 
 	@Test
@@ -175,7 +191,7 @@ class UserModuleIntegrationTests {
 	}
 
 	@Test
-	fun updateUserWithMissingTokenShouldReturnUnauthorized() {
+	fun updateUserWithMissingTokenShouldReturnForbidden() {
 		val request = UserRequestVO(
 			user = UserRequestVO.UserData(
 				username = "marie"
@@ -193,6 +209,34 @@ class UserModuleIntegrationTests {
 		.then()
 			.log().all()
 		.assertThat()
-			.statusCode(HttpStatus.UNAUTHORIZED.value())
+			.statusCode(HttpStatus.FORBIDDEN.value())
+	}
+
+	@Test
+	fun loginUserWithNonExiistingUserTokenShouldReturnNotFound() {
+		val user = testUtils.createFakeUser()
+
+		val token = jwtUtils.doGenerateToken(HashMap(), user.email)
+
+		val request = UserLoginRequestVO(
+			user = UserLoginRequestVO.Credentials(
+				email = user.email,
+				password = user.password
+			)
+		)
+
+		given()
+			.log().all()
+			.port(port)
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.header("Authorization", "Token $token")
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.body(mapper.writeValueAsString(request))
+		.`when`()
+			.post("/api/users/login")
+		.then()
+			.log().all()
+		.assertThat()
+			.statusCode(HttpStatus.NOT_FOUND.value())
 	}
 }

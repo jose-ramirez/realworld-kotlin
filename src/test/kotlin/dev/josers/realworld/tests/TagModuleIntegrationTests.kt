@@ -1,6 +1,5 @@
 package dev.josers.realworld.tests
 
-import dev.josers.realworld.config.TestConfig
 import dev.josers.realworld.model.Tag
 import dev.josers.realworld.repository.TagRepository
 import io.restassured.RestAssured.given
@@ -9,17 +8,10 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 
-@Import(TestConfig::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TagModuleIntegrationTests {
-    @LocalServerPort
-    var port: Int = 0
+class TagModuleIntegrationTests: AbstractIntegrationTest() {
 
     @Autowired
     lateinit var tagRepository: TagRepository
