@@ -10,15 +10,13 @@ import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 
 
-
-
 @Service
 class ArticleService(@Autowired val articleRepository: ArticleRepository) {
     fun listArticles(params: ListArticleRequestVO) =
         ArticleListResponseVO(articles = articleRepository.findAll())
 
     fun feed(){
-        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Actor Not Found", Exception("some exception"))
+        throw ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "To be implemented", null)
     }
 
     fun createArticle(slug: String, loggedUser: User){}
