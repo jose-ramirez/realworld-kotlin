@@ -2,6 +2,7 @@ package dev.josers.realworld.tests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.josers.realworld.config.TestConfig
+import dev.josers.realworld.model.Article
 import dev.josers.realworld.repository.ArticleRepository
 import dev.josers.realworld.repository.UserRepository
 import dev.josers.realworld.utils.JWTUtils
@@ -49,7 +50,7 @@ class ArticleModuleIntegrationTests: AbstractIntegrationTest() {
     }
 
     @Test
-    fun allIsGood(){
+    fun listArticlesShouldReturnOK(){
         given()
             .log().all()
             .port(port)
@@ -61,5 +62,30 @@ class ArticleModuleIntegrationTests: AbstractIntegrationTest() {
             .log().all()
         .assertThat()
             .statusCode(HttpStatus.OK.value())
+    }
+
+    @Test
+    fun createArticlesShouldCreateArticleAndReturnOK(){
+        val user = testUtils.createFakeUser()
+        userRepository.save(user)
+
+        val token = jwtUtils.doGenerateToken(HashMap(), user.email)
+
+        given()
+            .log().all()
+            .port(port)
+            .header("Authorization", "Token $token")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .body(testUtils.createFakeArticle(user))
+        .`when`()
+            .post("/api/articles")
+        .then()
+            .log().all()
+            .assertThat()
+            .statusCode(HttpStatus.OK.value())
+
+        val createdArticle = articleRepository.findAll()
+        assert(createdArticle.isNotEmpty())
     }
 }
