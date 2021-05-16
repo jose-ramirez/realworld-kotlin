@@ -4,6 +4,7 @@ import dev.josers.realworld.model.Article
 import dev.josers.realworld.model.Profile
 import dev.josers.realworld.model.User
 import dev.josers.realworld.repository.ArticleRepository
+import dev.josers.realworld.utils.updateVal
 import dev.josers.realworld.vo.request.ArticleRequestVO
 import dev.josers.realworld.vo.request.ListArticleRequestVO
 import dev.josers.realworld.vo.response.ArticleListResponseVO
@@ -46,7 +47,16 @@ class ArticleService(@Autowired val articleRepository: ArticleRepository) {
         return ArticleResponseVO(article = savedArticle)
     }
 
-    fun updateArticle(slug: String, loggedUser: User){}
+    fun updateArticle(slug: String, updatedArticleData: ArticleRequestVO, loggedUser: User){
+        val oldArticle = articleRepository.findBySlug(slug)
+
+        oldArticle?.title = oldArticle?.title?.updateVal(updatedArticleData.article?.title!!)!!
+        oldArticle.description = oldArticle.description.updateVal(updatedArticleData.article?.description!!)
+        oldArticle.body = oldArticle.body.updateVal(updatedArticleData.article.body!!)
+        oldArticle.tagList = updatedArticleData.article.tagList!!
+
+        articleRepository.save(oldArticle)
+    }
 
     fun deleteArticle(slug: String, loggedUser: User){}
 

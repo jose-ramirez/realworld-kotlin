@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ArticleRepository: MongoRepository<Article, String> {
+    fun findBySlug(slug: String): Article?
 }
