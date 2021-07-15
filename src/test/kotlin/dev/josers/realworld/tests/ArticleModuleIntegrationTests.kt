@@ -1,8 +1,6 @@
 package dev.josers.realworld.tests
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dev.josers.realworld.config.TestConfig
-import dev.josers.realworld.model.Article
 import dev.josers.realworld.repository.ArticleRepository
 import dev.josers.realworld.repository.UserRepository
 import dev.josers.realworld.utils.JWTUtils
@@ -14,14 +12,10 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 
-@Import(TestConfig::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+
 class ArticleModuleIntegrationTests: AbstractIntegrationTest() {
 
     @Autowired
@@ -102,7 +96,7 @@ class ArticleModuleIntegrationTests: AbstractIntegrationTest() {
 
         val article = testUtils.createFakeArticle(user)
         article.slug = newSlug
-        val savedArticle = articleRepository.save(article)
+        articleRepository.save(article)
 
         given()
             .log().all()

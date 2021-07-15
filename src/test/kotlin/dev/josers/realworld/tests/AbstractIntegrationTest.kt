@@ -2,22 +2,26 @@ package dev.josers.realworld.tests
 
 import dev.josers.realworld.config.KGenericContainer
 import dev.josers.realworld.config.TestConfig
+import org.junit.jupiter.api.TestInstance
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment
 import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 
-@Testcontainers
-@Import(TestConfig::class)
 @ActiveProfiles("test")
-@ContextConfiguration(initializers = [AbstractIntegrationTest.MongoInitializer::class])
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestConfig::class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@ContextConfiguration(
+    initializers = [
+        AbstractIntegrationTest.Companion.MongoInitializer::class
+    ]
+)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class AbstractIntegrationTest {
 
     @LocalServerPort
@@ -25,18 +29,22 @@ abstract class AbstractIntegrationTest {
 
     companion object {
         @Container
+        @JvmField
         val container = KGenericContainer("mongo:latest").apply {
             withExposedPorts(27017)
         }
-    }
 
-    class MongoInitializer: ApplicationContextInitializer<ConfigurableApplicationContext> {
-        override fun initialize(configurableApplicationContext: ConfigurableApplicationContext) {
-            val values = TestPropertyValues.of(
-                "spring.data.mongodb.host=${container.containerIpAddress}",
-                "spring.data.mongodb.port=${container.getMappedPort(27017)}"
-            )
-            values.applyTo(configurableApplicationContext)
+        init {
+            container.start()
+        }
+
+        class MongoInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
+            override fun initialize(context: ConfigurableApplicationContext) {
+                addInlinedPropertiesToEnvironment(
+                    context,
+                    "realworld.database-url=${container.containerIpAddress}:${container.getMappedPort(27017)}"
+                )
+            }
         }
     }
 }

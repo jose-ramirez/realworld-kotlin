@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://${realworld.database-url}/${realworld.database-name}
+
+realworld:
+  database-name: realworld-test
+
+server:
+  port: ${PORT:8080}
+
+jwt:
+  secret: some-secret
