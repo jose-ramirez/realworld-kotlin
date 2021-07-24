@@ -4,6 +4,5 @@ class ListArticleRequestVO(
     var tag: String?,
     var author: String?,
     var favorited: Boolean?,
-    limit: Int = 20,
-    offset: Int = 0) {
-}
+    var limit: Int = 20,
+    var offset: Int = 0)

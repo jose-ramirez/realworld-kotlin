@@ -1,5 +1,6 @@
 package dev.josers.realworld.controller
 
+import dev.josers.realworld.RestMethods.Articles
 import dev.josers.realworld.model.User
 import dev.josers.realworld.service.ArticleService
 import dev.josers.realworld.vo.request.ArticleRequestVO
@@ -10,22 +11,23 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class ArticlesController(@Autowired val articleService: ArticleService) {
-    @GetMapping("/api/articles")
-    fun listArticles(params: ListArticleRequestVO) =
-        ResponseEntity.ok(articleService.listArticles(params))
 
-    @GetMapping("/api/articles/feed")
+    @GetMapping(Articles.V1.PATH)
+    fun list(params: ListArticleRequestVO) =
+        ResponseEntity.ok(articleService.list(params))
+
+    @GetMapping(Articles.V1.FEED)
     fun feed(params: ListArticleRequestVO) =
         ResponseEntity.ok(articleService.feed(params))
 
-    @PostMapping("/api/articles")
-    fun createArticle(request: ArticleRequestVO, loggedUser: User) =
-        ResponseEntity.ok(articleService.createArticle(request, loggedUser))
+    @PostMapping(Articles.V1.PATH)
+    fun create(request: ArticleRequestVO, loggedUser: User) =
+        ResponseEntity.ok(articleService.create(request, loggedUser))
 
-    @PutMapping("/api/articles/{slug}")
-    fun updateArticle(
+    @PutMapping(Articles.V1.ARTICLES_BY_SLUG)
+    fun update(
             @PathVariable("slug") slug: String,
             @RequestBody request: ArticleRequestVO,
             loggedUser: User) =
-        ResponseEntity.ok(articleService.updateArticle(slug, request, loggedUser))
+        ResponseEntity.ok(articleService.update(slug, request, loggedUser))
 }

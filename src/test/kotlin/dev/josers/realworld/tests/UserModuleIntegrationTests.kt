@@ -1,6 +1,7 @@
 package dev.josers.realworld.tests
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import dev.josers.realworld.RestMethods.Users
 import dev.josers.realworld.repository.UserRepository
 import dev.josers.realworld.utils.JWTUtils
 import dev.josers.realworld.utils.TestUtils
@@ -65,7 +66,7 @@ class UserModuleIntegrationTests: AbstractIntegrationTest() {
 			.accept(MediaType.APPLICATION_JSON_VALUE)
 			.body(mapper.writeValueAsString(request))
 		.`when`()
-			.post("/api/users")
+			.post(Users.V1.PATH)
 		.then()
 			.log().all()
 		.assertThat()
@@ -92,7 +93,7 @@ class UserModuleIntegrationTests: AbstractIntegrationTest() {
 			.accept(MediaType.APPLICATION_JSON_VALUE)
 			.body(mapper.writeValueAsString(request))
 		.`when`()
-			.post("/api/users")
+			.post(Users.V1.PATH)
 		.then()
 			.log().all()
 		.assertThat()
@@ -121,7 +122,7 @@ class UserModuleIntegrationTests: AbstractIntegrationTest() {
 			.accept(MediaType.APPLICATION_JSON_VALUE)
 			.body(mapper.writeValueAsString(request))
 		.`when`()
-			.post("/api/users/login")
+			.post(Users.V1.LOGIN)
 		.then()
 			.log().all()
 		.assertThat()
@@ -146,7 +147,7 @@ class UserModuleIntegrationTests: AbstractIntegrationTest() {
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.accept(MediaType.APPLICATION_JSON_VALUE)
 		.`when`()
-			.get("/api/user")
+			.get(Users.V1.USER)
 		.then()
 			.log().all()
 		.assertThat()
@@ -178,7 +179,7 @@ class UserModuleIntegrationTests: AbstractIntegrationTest() {
 			.accept(MediaType.APPLICATION_JSON_VALUE)
 			.body(mapper.writeValueAsString(request))
 		.`when`()
-			.put("/api/users")
+			.put(Users.V1.PATH)
 		.then()
 			.log().all()
 		.assertThat()
@@ -205,7 +206,7 @@ class UserModuleIntegrationTests: AbstractIntegrationTest() {
 			.accept(MediaType.APPLICATION_JSON_VALUE)
 			.body(mapper.writeValueAsString(request))
 		.`when`()
-			.put("/api/users")
+			.put(Users.V1.PATH)
 		.then()
 			.log().all()
 		.assertThat()
@@ -233,7 +234,7 @@ class UserModuleIntegrationTests: AbstractIntegrationTest() {
 			.accept(MediaType.APPLICATION_JSON_VALUE)
 			.body(mapper.writeValueAsString(request))
 		.`when`()
-			.post("/api/users/login")
+			.post(Users.V1.LOGIN)
 		.then()
 			.log().all()
 		.assertThat()

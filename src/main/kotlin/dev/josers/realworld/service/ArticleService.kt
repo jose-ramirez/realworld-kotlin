@@ -14,16 +14,22 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class ArticleService(@Autowired val articleRepository: ArticleRepository) {
-    fun listArticles(params: ListArticleRequestVO) =
-        ArticleListResponseVO(articles = articleRepository.findAll())
+class ArticleService @Autowired constructor(
+        val articleRepository: ArticleRepository) {
 
-    // articles by people I follow, ordered by creation date
-    fun feed(params: ListArticleRequestVO): ArticleListResponseVO {
-        return ArticleListResponseVO(articles = articleRepository.findAll())
+    companion object {
+        const val NOT_IMPLEMENTED = "Not implemented yet"
     }
 
-    fun createArticle(request: ArticleRequestVO, loggedUser: User): ArticleResponseVO{
+    // articles by params given, ordered by date
+    fun list(params: ListArticleRequestVO) =
+        ArticleListResponseVO(articles = articleRepository.findArticlesByParams(params))
+
+    // articles by people I follow, ordered by creation date, paginated
+    fun feed(params: ListArticleRequestVO): ArticleListResponseVO =
+        ArticleListResponseVO(articles = articleRepository.findArticleFeedByParams(params))
+
+    fun create(request: ArticleRequestVO, loggedUser: User): ArticleResponseVO{
         val data = request.article
 
         val author = Profile(
@@ -47,7 +53,7 @@ class ArticleService(@Autowired val articleRepository: ArticleRepository) {
         return ArticleResponseVO(article = savedArticle)
     }
 
-    fun updateArticle(slug: String, updatedArticleData: ArticleRequestVO, loggedUser: User){
+    fun update(slug: String, updatedArticleData: ArticleRequestVO, loggedUser: User){
         val oldArticle = articleRepository.findBySlug(slug)
 
         oldArticle?.title = oldArticle?.title?.updateVal(updatedArticleData.article?.title!!)!!
@@ -58,9 +64,15 @@ class ArticleService(@Autowired val articleRepository: ArticleRepository) {
         articleRepository.save(oldArticle)
     }
 
-    fun deleteArticle(slug: String, loggedUser: User){}
+    fun delete(slug: String, loggedUser: User){
+        TODO(NOT_IMPLEMENTED)
+    }
 
-    fun likeArticle(slug: String, loggedUser: User){}
+    fun like(slug: String, loggedUser: User){
+        TODO(NOT_IMPLEMENTED)
+    }
 
-    fun unlikeArticle(slug: String, loggedUser: User){}
+    fun unlike(slug: String, loggedUser: User){
+        TODO(NOT_IMPLEMENTED)
+    }
 }

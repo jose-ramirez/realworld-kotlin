@@ -1,5 +1,6 @@
 package dev.josers.realworld.tests
 
+import dev.josers.realworld.RestMethods.Profiles
 import dev.josers.realworld.model.Following
 import dev.josers.realworld.repository.FollowingRepository
 import dev.josers.realworld.repository.UserRepository
@@ -53,7 +54,7 @@ class ProfilesModuleIntegrationTests: AbstractIntegrationTest() {
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .pathParam("username", user.username)
             .`when`()
-        .get("/api/profiles/{username}")
+        .get(Profiles.V1.PROFILE)
             .then()
         .log().all()
             .assertThat()
@@ -79,7 +80,7 @@ class ProfilesModuleIntegrationTests: AbstractIntegrationTest() {
             .header("Authorization", "Token $followerToken")
             .pathParam("username", followed.username)
         .`when`()
-            .post("/api/profiles/{username}/follow")
+            .post(Profiles.V1.PROFILE_FOLLOW)
         .then()
             .log().all()
         .assertThat()
@@ -113,7 +114,7 @@ class ProfilesModuleIntegrationTests: AbstractIntegrationTest() {
             .header("Authorization", "Token $followerToken")
             .pathParam("username", followed.username)
         .`when`()
-            .delete("/api/profiles/{username}/follow")
+            .delete(Profiles.V1.PROFILE_FOLLOW)
         .then()
             .log().all()
         .assertThat()

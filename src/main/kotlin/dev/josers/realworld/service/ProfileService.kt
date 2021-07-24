@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ProfileService(@Autowired val userRepository: UserRepository,
-                     @Autowired val followingRepository: FollowingRepository) {
+class ProfileService @Autowired constructor(
+        val userRepository: UserRepository,
+        val followingRepository: FollowingRepository) {
 
     fun followUser(username: String, loggedUser: User): ProfileResponseVO {
         val followed = userRepository.findByUsername(username)

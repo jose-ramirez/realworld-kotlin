@@ -17,15 +17,16 @@ class TestUtils(@Autowired val faker: Faker){
         bio = faker.lorem().sentence(4),
         image = faker.internet().image())
 
-    fun createFakeArticle(loggedUser: User): Article{
+    fun createFakeArticle(loggedUser: User, tags: List<String> = emptyList()): Article {
 
         val author = Profile(
             loggedUser.username,
             loggedUser.bio,
             loggedUser.image,
-            false)
+            false
+        )
 
-        val article = Article(
+        return Article(
             slug = "",
             title = faker.artist().name() ?: "",
             description = faker.lorem().sentence() ?: "",
@@ -33,8 +34,7 @@ class TestUtils(@Autowired val faker: Faker){
             author = author,
             favorited = false,
             favoritesCount = 0,
-            tagList = emptyList())
-
-        return article
+            tagList = tags
+        )
     }
 }

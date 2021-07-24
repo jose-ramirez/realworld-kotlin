@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class TagService(@Autowired val tagRepository: TagRepository) {
+class TagService @Autowired constructor(private val tagRepository: TagRepository) {
     fun getTags() = TagResponseVO(tagRepository.findAll().map { tag -> tag.name })
-
 }

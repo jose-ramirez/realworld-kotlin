@@ -16,9 +16,10 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @Service
-class UserService(@Autowired val userRepository: UserRepository,
-                  @Autowired val encoder: BCryptPasswordEncoder,
-                  @Autowired val jwtUtils: JWTUtils) {
+class UserService @Autowired constructor(
+        private val userRepository: UserRepository,
+        private val encoder: BCryptPasswordEncoder,
+        private val jwtUtils: JWTUtils) {
 
     private fun checkPassword(userData: UserRequestVO.UserData) {
         if(!Strings.hasText(userData.password)) {

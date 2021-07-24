@@ -1,6 +1,7 @@
 package dev.josers.realworld.tests
 
 import dev.josers.realworld.model.Tag
+import dev.josers.realworld.RestMethods.Tags
 import dev.josers.realworld.repository.TagRepository
 import io.restassured.RestAssured.given
 import org.hamcrest.CoreMatchers.equalTo
@@ -32,7 +33,7 @@ class TagModuleIntegrationTests: AbstractIntegrationTest() {
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .port(port)
         .`when`()
-            .get("/api/tags")
+            .get(Tags.V1.PATH)
         .then()
             .log().all()
         .assertThat()
