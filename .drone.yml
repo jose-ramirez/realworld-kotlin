@@ -4,11 +4,14 @@ type: docker
 name: default
 
 steps:
-  - name: test
-    pull: if-not-exists
-    image: docker.io/josers/realworld-kotlin-img
+  - name: build
+    image: maven:3-jdk-10
     command:
-      - mvn test
+      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - name: test
+    image: maven:3-jdk-10
+    command:
+      - mvn test -B
 
 services:
   - name: docker
@@ -20,6 +23,3 @@ services:
     volumes:
       - name: dockersock
         path: /var/run
-
-image_pull_secrets:
-  - dockerconfig
