@@ -20,6 +20,7 @@ class TestUtils(@Autowired val faker: Faker){
     fun createFakeArticle(loggedUser: User, tags: List<String> = emptyList()): Article {
 
         val author = Profile(
+            loggedUser.id!!,
             loggedUser.username,
             loggedUser.bio,
             loggedUser.image,
@@ -32,7 +33,6 @@ class TestUtils(@Autowired val faker: Faker){
             description = faker.lorem().sentence() ?: "",
             body = faker.lorem().paragraph() ?: "",
             author = author,
-            favorited = false,
             favoritesCount = 0,
             tagList = tags
         )

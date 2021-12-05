@@ -1,23 +1,24 @@
-package dev.josers.realworld.model
+package dev.josers.realworld.vo
 
+import dev.josers.realworld.model.Profile
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
-import org.springframework.data.mongodb.core.mapping.Document
 import java.util.*
 
-@Document(collection = "articles")
-class Article(
+class ArticleVO (
     @Id var id: String? = null,
     var slug: String,
     var title: String = "",
     var description: String,
     var body: String,
     var tagList: List<String>,
+    var favorited: Boolean,
     var favoritesCount: Int,
     @CreatedDate var createdAt: Date = Date(),
     @LastModifiedDate var updatedAt: Date = Date(),
-    var author: Profile)
+    var author: Profile
+)
 
 //{
 //    "article": {
@@ -28,6 +29,7 @@ class Article(
 //    "tagList": ["dragons", "training"],
 //    "createdAt": "2016-02-18T03:22:56.637Z",
 //    "updatedAt": "2016-02-18T03:48:35.824Z",
+//    "favorited": false,
 //    "favoritesCount": 0,
 //    "author": {
 //        "username": "jake",

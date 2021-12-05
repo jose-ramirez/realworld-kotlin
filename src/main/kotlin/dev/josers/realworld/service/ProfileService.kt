@@ -24,6 +24,7 @@ class ProfileService @Autowired constructor(
             ))
 
             ProfileResponseVO(profile = Profile(
+                idUser = followed.id!!,
                 username = followed.username,
                 bio = followed.bio,
                 image = followed.image,
@@ -44,6 +45,7 @@ class ProfileService @Autowired constructor(
         return if (user != null) {
             ProfileResponseVO(
                 profile = Profile(
+                    idUser = user.id!!,
                     username = user.username,
                     bio = user.bio,
                     image = user.image,

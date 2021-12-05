@@ -10,6 +10,7 @@ data class UserRequestVO(var user: UserData? = null) {
                     val image: String? = "") {
 
         fun toUser() = User(
+                id = "",
                 email = this.email,
                 password = this.password,
                 username = this.username,

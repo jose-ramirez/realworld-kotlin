@@ -1,9 +1,11 @@
 package dev.josers.realworld.service
 
 import dev.josers.realworld.model.Article
+import dev.josers.realworld.model.Like
 import dev.josers.realworld.model.Profile
 import dev.josers.realworld.model.User
 import dev.josers.realworld.repository.ArticleRepository
+import dev.josers.realworld.repository.LikeRepository
 import dev.josers.realworld.utils.updateVal
 import dev.josers.realworld.vo.request.ArticleRequestVO
 import dev.josers.realworld.vo.request.ListArticleRequestVO
@@ -15,7 +17,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ArticleService @Autowired constructor(
-        val articleRepository: ArticleRepository) {
+        val articleRepository: ArticleRepository,
+        val likeRepository: LikeRepository) {
 
     companion object {
         const val NOT_IMPLEMENTED = "Not implemented yet"
@@ -26,25 +29,26 @@ class ArticleService @Autowired constructor(
         ArticleListResponseVO(articles = articleRepository.findArticlesByParams(params))
 
     // articles by people I follow, ordered by creation date, paginated
-    fun feed(params: ListArticleRequestVO): ArticleListResponseVO =
-        ArticleListResponseVO(articles = articleRepository.findArticleFeedByParams(params))
+    fun feed(loggedUser: User, params: ListArticleRequestVO): ArticleListResponseVO =
+        ArticleListResponseVO(articles = articleRepository.findFeedByParams(loggedUser, params))
 
     fun create(request: ArticleRequestVO, loggedUser: User): ArticleResponseVO{
         val data = request.article
 
         val author = Profile(
+            loggedUser.id!!,
             loggedUser.username,
             loggedUser.bio,
             loggedUser.image,
             false)
 
         val article = Article(
+            id = null,
             slug = "",
             title = data?.title ?: "",
             description = data?.description ?: "",
             body = data?.body ?: "",
             author = author,
-            favorited = false,
             favoritesCount = 0,
             tagList = emptyList())
 
@@ -69,10 +73,19 @@ class ArticleService @Autowired constructor(
     }
 
     fun like(slug: String, loggedUser: User){
-        TODO(NOT_IMPLEMENTED)
+        val article = articleRepository.findBySlug(slug)
+        likeRepository.save(Like(articleId = article?.id!!, userId = loggedUser.id!!))
     }
 
     fun unlike(slug: String, loggedUser: User){
-        TODO(NOT_IMPLEMENTED)
+        val article = articleRepository.findBySlug(slug)
+        val like = likeRepository.findByArticleId(article?.id!!)
+        likeRepository.delete(like!!)
+    }
+
+    private fun userLikesArticle(user: User, slug: String): Boolean {
+        val article = articleRepository.findBySlug(slug)
+        val like = likeRepository.findByArticleId(article?.id!!)
+        return user.id == like!!.userId
     }
 }

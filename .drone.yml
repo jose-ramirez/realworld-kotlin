@@ -1,0 +1,25 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: test
+    pull: if-not-exists
+    image: docker.io/josers/realworld-kotlin-img
+    command:
+      - mvn test
+
+services:
+  - name: docker
+    image: docker:dind
+    command:
+      - --max-concurrent-downloads
+      - 6
+    privileged: true
+    volumes:
+      - name: dockersock
+        path: /var/run
+
+image_pull_secrets:
+  - dockerconfig

@@ -17,8 +17,8 @@ class ArticlesController(@Autowired val articleService: ArticleService) {
         ResponseEntity.ok(articleService.list(params))
 
     @GetMapping(Articles.V1.FEED)
-    fun feed(params: ListArticleRequestVO) =
-        ResponseEntity.ok(articleService.feed(params))
+    fun feed(loggedUser: User, params: ListArticleRequestVO) =
+        ResponseEntity.ok(articleService.feed(loggedUser, params))
 
     @PostMapping(Articles.V1.PATH)
     fun create(request: ArticleRequestVO, loggedUser: User) =

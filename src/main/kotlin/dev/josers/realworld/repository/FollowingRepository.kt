@@ -6,5 +6,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface FollowingRepository: MongoRepository<Following, String> {
+
+    fun findByIdFollower(followerId: String): List<Following>
+
     fun deleteByIdFollowerAndIdFollowed(idFollower: String?, idFollowed: String?)
 }
