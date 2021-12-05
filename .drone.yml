@@ -5,21 +5,8 @@ name: default
 
 steps:
   - name: build
-    image: maven:3-jdk-10
-    command:
-      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-  - name: test
-    image: maven:3-jdk-10
-    command:
-      - mvn test -B
-
-services:
-  - name: docker
-    image: docker:dind
-    command:
-      - --max-concurrent-downloads
-      - 6
+    image: maven:3-jdk-11
     privileged: true
-    volumes:
-      - name: dockersock
-        path: /var/run
+    commands:
+    - mvn install -DskipTests=true
+    - mvn test
