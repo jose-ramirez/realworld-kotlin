@@ -17,7 +17,7 @@
 	<properties>
 		<kotlin.version>1.3.71</kotlin.version>
 		<rest-assured-version>4.0.0</rest-assured-version>
-		<swagger-version>2.9.2</swagger-version>
+		<swagger-version>2.10.0</swagger-version>
 		<junit.jupiter.version>5.5.2</junit.jupiter.version>
 		<spring.test.version>2.2.3.RELEASE</spring.test.version>
 		<testcontainers.version>1.14.3</testcontainers.version>
